@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS numbers
+(
+    id    SERIAL PRIMARY KEY,
+    req   INTEGER
+);
