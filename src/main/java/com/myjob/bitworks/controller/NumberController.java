@@ -1,5 +1,7 @@
 package com.myjob.bitworks.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myjob.bitworks.model.Number;
 import com.myjob.bitworks.service.NumberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +25,13 @@ public class NumberController {
     }
 
     @GetMapping(value = "/{number}")
-    public ResponseEntity<String> read(@PathVariable(name = "number") int numberRec) {
+    public ResponseEntity<String> read(@PathVariable(name = "number") int numberRec) throws JsonProcessingException {
         final Number number = numberService.read(numberRec);
 
+        ObjectMapper mapper = new ObjectMapper();
+
         return number != null
-                ? new ResponseEntity<>(number.toString(), HttpStatus.OK)
+                ? new ResponseEntity<>(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(number), HttpStatus.OK)
                 : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
